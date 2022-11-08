@@ -15,11 +15,11 @@
 #Security Class Interface
 class securityInterface():
     def __init__(self, name: str) -> None:
-        pass
+        self.name = name
     
     #Return the security's name
     def getName(self) -> str:
-        return "Implement Me!"
+        return self.name
 
     #Return the current security's market value
     def getCurrentMarketValue(self) -> float:

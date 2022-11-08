@@ -22,10 +22,13 @@ import implementations.securitySolution
 
 def test_securityInit():
     #GIVEN
-    EXPECTED_NAME = "DSAQ US Equity"
+    EXPECTED_NAME1 = "DSAQ US Equity"
+    EXPECTED_NAME2 = "AAPL"
 
     #WHEN
-    testObj = implementations.securitySolution.security(EXPECTED_NAME)
+    testObj1 = implementations.securitySolution.security(EXPECTED_NAME1)
+    testObj2 = implementations.securitySolution.security(EXPECTED_NAME2)
 
     #EXPECT
-    assert (testObj.getName() == EXPECTED_NAME)
+    assert (testObj1.getName() == EXPECTED_NAME1)
+    assert (testObj2.getName() == EXPECTED_NAME1)
