@@ -6,12 +6,15 @@ if module_path not in sys.path:
 
 from interfaces.positionInterface import positionInterface
 from interfaces.securityInterface import securityInterface
+from implementations.securitySolution import security
 
 class position(positionInterface):
     def __init__(self, sec, initPos: int) -> None:
-        super.__init__(sec, initPos)
+        super().__init__(sec, initPos)
         self.pos = initPos
         self.sec = sec
+        if isinstance(sec, security): self.sec = sec
+        else: self.sec = security(sec)
 
     def getSecurity(self) -> securityInterface:
         return self.sec
