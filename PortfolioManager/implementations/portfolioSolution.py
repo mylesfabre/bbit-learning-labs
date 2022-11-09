@@ -42,7 +42,6 @@ class portfolio(portfolioInterface):
             self.accts.pop(name, None)
 
     def acctMarVal(self, accounts:Iterable[accountInterface]):
-        #Aggregate positions at this level & query their security value.
         posDict = {}
         totMarVal = 0
         for acct in accounts:
@@ -62,10 +61,8 @@ class portfolio(portfolioInterface):
         return self.acctMarVal(self.changeAcctPos(self.getAccounts(accountNames, securities), securities))
 
     def changeAcctPos(self, accounts: Iterable[accountInterface], securities: Set) -> Iterable[accountInterface]:
-        if securities:
-            return accounts
+        if securities: return accounts
         modAccts = set()
         for acc in accounts:
-            modAccts.add(account(acc.getPositions(securities).values(), "trimmed"))    
-
+            modAccts.add(account(acc.getPositions(securities).values()))    
         return modAccts
