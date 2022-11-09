@@ -2,6 +2,7 @@ from typing import Set, Iterable
 from interfaces.accountInterface import accountInterface
 from interfaces.securityInterface import securityInterface
 from interfaces.portfolioInterface import portfolioInterface
+from generators.priceDataGenerator import priceData
 
 class portfolio(portfolioInterface):
     def __init__(self, portfolioName: str, accounts: Set[accountInterface]) -> None:
@@ -39,3 +40,32 @@ class portfolio(portfolioInterface):
     def removeAccounts(self, accountNames: Set[str]) -> None:
         for name in accountNames:
             self.accts.pop(name, None)
+
+    def acctMarVal(self, accounts:Iterable[accountInterface]):
+        #Aggregate positions at this level & query their security value.
+        posDict = {}
+        totMarVal = 0
+        for acct in accounts:
+            for pos in acct.getAllPositions():
+                if pos.getSecurity().getName() in posDict:
+                    posDict[pos.getSecurity().getName()][0] += pos.getPosition()
+                else:
+                    posDict[pos.getSecurity().getName()] = [pos.getPosition(), pos.getSecurity()]
+        for posInfo in posDict.values():
+            totMarVal += posInfo[0] * posInfo[1].getCurrentMarketValue()
+        return totMarVal
+
+    def getCurrentMarketValue(self) -> dict:
+        return self.acctMarVal(self.accts.values())
+
+    def getCurrentFilteredMarketValue(self, securities: Set, accountNames: Set[str]) -> float:
+        return self.acctMarVal(self.changeAcctPos(self.getAccounts(accountNames, securities), securities))
+
+    def changeAcctPos(self, accounts: Iterable[accountInterface], securities: Set) -> Iterable[accountInterface]:
+        if securities:
+            return accounts
+        modAccts = set()
+        for acc in accounts:
+            modAccts.add(account(acc.getPositions(securities).values(), "trimmed"))    
+
+        return modAccts

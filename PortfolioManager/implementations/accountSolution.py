@@ -44,3 +44,16 @@ class account(accountInterface):
                 del self.posSet[sec.getName()]
             else: del self.posSet[sec]
 
+    # loop to add all of the positions together
+    def getCurrentMarketValue(self) -> float:
+        acctVal = 0.0
+        for pos in self.posSet.values():
+            acctVal += pos.getCurrentMarketValue()
+        return acctVal
+
+    # loop to add all of the specified positions together
+    def getCurrentFilteredMarketValue(self, securities: Set) -> float:
+        acctVal = 0.0
+        for pos in self.getPositions(securities).values():
+            acctVal += pos.getCurrentMarketValue()
+        return acctVal

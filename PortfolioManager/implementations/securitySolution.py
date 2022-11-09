@@ -5,6 +5,7 @@ if module_path not in sys.path:
     sys.path.append(module_path)
 
 from interfaces.securityInterface import securityInterface
+from generators.priceDataGenerator import priceData
 
 class security(securityInterface):
 
@@ -14,3 +15,6 @@ class security(securityInterface):
 
     def getName(self) -> str:
         return self.name
+
+    def getCurrentMarketValue(self) -> float:
+        return priceData().getCurrentPrice(self.name)

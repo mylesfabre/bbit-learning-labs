@@ -7,6 +7,7 @@ if module_path not in sys.path:
 from interfaces.positionInterface import positionInterface
 from interfaces.securityInterface import securityInterface
 from implementations.securitySolution import security
+from generators.priceDataGenerator import priceData
 
 class position(positionInterface):
     def __init__(self, sec, initPos: int) -> None:
@@ -33,3 +34,7 @@ class position(positionInterface):
             raise ValueError("Action will result in prohibited short position.")
         else:
             self.pos += inputValue
+
+    def getCurrentMarketValue(self) -> float:
+        val = self.pos * self.sec.getCurrentMarketValue()
+        return val
